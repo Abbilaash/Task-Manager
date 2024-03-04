@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Task</title>
+  </head>
+  <body>
+    <h1>Edit Task</h1>
+    <form action="/edit_task/{{ task_id }}" method="post">
+      <label for="new_name">New Task Name:</label>
+      <input
+        type="text"
+        id="new_name"
+        name="new_name"
+        value="{{ task['name'] }}"
+        required
+      />
+      <label for="new_time">New Task Time:</label>
+      <input
+        type="text"
+        id="new_time"
+        name="new_time"
+        value="{{ task['time'] }}"
+        required
+      />
+      <button type="submit">Update Task</button>
+    </form>
+  </body>
+</html>

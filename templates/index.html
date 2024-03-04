@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <style>
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+        padding-top: 60px;
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Task Manager</h1>
+    <form action="/add_task" method="post">
+      <label for="task_name">Task Name:</label>
+      <input type="text" id="task_name" name="task_name" required />
+      <button type="submit">Add Task</button>
+    </form>
+    <ul>
+      {% for task in tasks %}
+      <li>
+        {{ task['name'] }} - {{ task['time'] }}
+        <a href="javascript:void(0)" onclick="openEditModal('{{ task['id'] }}')"
+          >Edit</a
+        >
+      </li>
+      {% endfor %}
+    </ul>
+
+    <!-- Edit Task Modal -->
+    <div id="editTaskModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <form id="editTaskForm" action="" method="post">
+          <input type="hidden" id="edit_task_id" name="edit_task_id" />
+          <label for="new_name">New Task Name:</label>
+          <input type="text" id="new_name" name="new_name" required />
+          <button type="submit">Update Task</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function openEditModal(task_id) {
+        var modal = document.getElementById("editTaskModal");
+        modal.style.display = "block";
+        var form = document.getElementById("editTaskForm");
+        form.action = "/edit_task/" + task_id;
+        var taskName = document.getElementById("new_name");
+        taskName.value = document.getElementById(task_id + "-name").innerHTML;
+        document.getElementById("edit_task_id").value = task_id;
+      }
+
+      function closeEditModal() {
+        var modal = document.getElementById("editTaskModal");
+        modal.style.display = "none";
+      }
+    </script>
+  </body>
+</html>
