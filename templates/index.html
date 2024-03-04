@@ -42,6 +42,7 @@
         <a href="javascript:void(0)" onclick="openEditModal('{{ task['id'] }}')"
           >Edit</a
         >
+        <button onclick="completeTask('{{ task['id'] }}')">Complete</button>
       </li>
       {% endfor %}
     </ul>
@@ -53,6 +54,12 @@
         <form id="editTaskForm" action="" method="post">
           <input type="hidden" id="edit_task_id" name="edit_task_id" />
           <label for="new_name">New Task Name:</label>
+          <input
+            type="checkbox"
+            id="my_checkbox"
+            name="my_checkbox"
+            value="1"
+          />
           <input type="text" id="new_name" name="new_name" required />
           <button type="submit">Update Task</button>
         </form>
@@ -73,6 +80,25 @@
       function closeEditModal() {
         var modal = document.getElementById("editTaskModal");
         modal.style.display = "none";
+      }
+      function completeTask(task_id) {
+        // Send value to Flask
+        fetch("/complete_task/" + task_id, {
+          method: "POST",
+          body: JSON.stringify({ completed: 1 }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            // Handle response if needed
+            console.log("Task completed");
+            location.reload();
+          })
+          .catch((error) => {
+            // Handle error if needed
+            console.error("Error completing task:", error);
+          });
       }
     </script>
   </body>
